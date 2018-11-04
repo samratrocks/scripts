@@ -9,16 +9,17 @@ sudo ufw status
 
 sudo apt-get -y update
 sudo apt-get -y install python3 python3-venv python3-dev
-sudo apt-get -y install mysql-server postfix supervisor nginx git
+sudo apt-get -y install supervisor nginx git
 
 
 # Create a basic flask application
 git clone https://github.com/samratrocks/flask-template.git 
-cd flask-template
+mv flask-template blog
+cd blog
 
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install flask
 
 pip install gunicorn
 echo "export FLASK_APP=$APPNAME.py" >> ~/.profile
