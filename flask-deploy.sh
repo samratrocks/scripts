@@ -24,8 +24,8 @@ pip install flask
 pip install gunicorn
 echo "export FLASK_APP=$APPNAME.py" >> ~/.profile
 
-gunicorn -b localhost:8000 -w 4 $APPNAME:app
 
+# gunicorn -b localhost:8000 -w 4 $APPNAME:app
 
 # Supervisor configuration.
 cat <<EOL | sudo tee /etc/supervisor/conf.d/$APPNAME.conf
@@ -49,23 +49,6 @@ server {
     # listen on port 80 (http)
     listen 80;
     server_name _;
-    location / {
-        # redirect any requests to the same URL but on https
-        return 301 https://$host$request_uri;
-    }
-}
-server {
-    # listen on port 443 (https)
-    listen 443 ssl;
-    server_name _;
-
-    # location of the self-signed SSL certificate
-    ssl_certificate /home/$USER/$APPNAME/certs/cert.pem;
-    ssl_certificate_key /home/$USER/$APPNAME/certs/key.pem;
-
-    # write access and error logs to /var/log
-    access_log /var/log/$APPNAME_access.log;
-    error_log /var/log/$APPNAME_error.log;
 
     location / {
         # forward application requests to the gunicorn server
@@ -82,6 +65,7 @@ server {
         expires 30d;
     }
 }
+
 EOL
 
 sudo service nginx reload
