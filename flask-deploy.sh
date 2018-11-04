@@ -27,7 +27,7 @@ gunicorn -b localhost:8000 -w 4 $APPNAME:app
 
 
 # Supervisor configuration.
-cat >/etc/supervisor/conf.d/$APPNAME.conf <<EOL
+cat <<EOL | sudo tee /etc/supervisor/conf.d/$APPNAME.conf
 [program:$APPNAME]
 command=/home/$USER/$APPNAME/venv/bin/gunicorn -b localhost:8000 -w 4 $APPNAME:app
 directory=/home/$USER/$APPNAME
@@ -43,7 +43,7 @@ sudo supervisorctl reload
 sudo rm /etc/nginx/sites-enabled/default
 
 # Nginx configuration.
-cat >/etc/nginx/sites-enabled/$APPNAME <<EOL
+cat << EOL | sudo tee /etc/nginx/sites-enabled/$APPNAME 
 server {
     # listen on port 80 (http)
     listen 80;
