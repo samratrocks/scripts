@@ -26,8 +26,8 @@ echo "export FLASK_APP=$APPNAME.py" >> ~/.profile
 gunicorn -b localhost:8000 -w 4 $APPNAME:app
 
 
-
-/etc/supervisor/conf.d/$APPNAME.conf: Supervisor configuration.
+# Supervisor configuration.
+cat >/etc/supervisor/conf.d/$APPNAME.conf <<EOL
 [program:$APPNAME]
 command=/home/$USER/$APPNAME/venv/bin/gunicorn -b localhost:8000 -w 4 $APPNAME:app
 directory=/home/$USER/$APPNAME
@@ -36,13 +36,14 @@ autostart=true
 autorestart=true
 stopasgroup=true
 killasgroup=true
+EOL
 
 
 sudo supervisorctl reload
 sudo rm /etc/nginx/sites-enabled/default
 
-
-/etc/nginx/sites-enabled/$APPNAME: Nginx configuration.
+# Nginx configuration.
+cat >/etc/nginx/sites-enabled/$APPNAME <<EOL
 server {
     # listen on port 80 (http)
     listen 80;
@@ -80,6 +81,7 @@ server {
         expires 30d;
     }
 }
+EOL
 
 sudo service nginx reload
 
