@@ -1,3 +1,5 @@
+APPNAME="blog"
+
 sudo apt-get install -y ufw
 sudo ufw allow ssh
 sudo ufw allow http
@@ -10,11 +12,9 @@ sudo apt-get -y install python3 python3-venv python3-dev
 sudo apt-get -y install mysql-server postfix supervisor nginx git
 
 
-#``` Change this to create a basic flask application
-git clone https://github.com/miguelgrinberg/microblog
-cd microblog
-git checkout v0.17
-#```
+# Create a basic flask application
+git clone https://github.com/samratrocks/flask-template.git 
+cd flask-template
 
 python3 -m venv venv
 source venv/bin/activate
